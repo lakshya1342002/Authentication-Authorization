@@ -78,3 +78,40 @@ export async function registerHandler(req:Request , res:Response){
         
     }
 }
+
+export async function verifyEmailHandler(req: Request , res: Response){
+    const token = req.query.token as string | undefined;
+
+    if(!token){
+        return res.status(400).json({
+            message: ' verfication token is missing'
+        })
+    }
+    try{
+        const payload = jwt.verify(token , process.env.JWT_ACCESS_SECRET!) as {
+            sub:string;
+        }
+        const user = await User.findById(payload.sub);
+
+        if(!user){
+            return res.status(400).json({
+                message: 'User not found'
+            })
+        }
+
+        if(user.isEmailVerified){
+            return res.json({message: 'Email is already verified'})
+        }
+
+        user.isEmailVerified = true;
+        await user.save();
+
+         return res.json({message: 'Email is now verified! you can login'})
+
+    }catch(err){
+        console.log(err);
+        return res.status(500).json({
+        message:'Internal server error'
+        }) 
+    }
+}
