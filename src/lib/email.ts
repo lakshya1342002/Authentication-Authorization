@@ -1,7 +1,7 @@
 import nodemailer from 'nodemailer'
 
 export async function sendEmail(to: string , subject:string , html:string){
-    if(!process.env.SMTP_HOST || process.env.SMTP_USER || process.env.SMTP_PASS ){
+    if(!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS ){
         console.log('Email envs are not available');
         return ;
     }

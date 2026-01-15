@@ -19,7 +19,8 @@ const userSchema = new Schema({
     },
      role:{
         type:String,
-        enum:['user' , 'admin']
+        enum:['user' , 'admin'],
+        default: "user",
     },
     isEmailVerified:{
         type:Boolean,
@@ -41,7 +42,7 @@ const userSchema = new Schema({
         default:0
     },
     resetPasswordToken:{
-        tyoe:String,
+        type:String,
         default:undefined
     },
     resetPasswordExpires:{
